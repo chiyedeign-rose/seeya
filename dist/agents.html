@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Our Agents — Karseell Global Network</title>
+<style>@font-face{font-family:Poppins;src:url('assets/Poppins-Regular.ttf');font-display:swap}@font-face{font-family:Poppins;src:url('assets/Poppins-SemiBold.ttf');font-weight:600;font-display:swap}:root{--wine:#970020}*{box-sizing:border-box}body{margin:0;font-family:Poppins,Arial,sans-serif;color:#211e1f}button,input,select,textarea{font:inherit}button{cursor:pointer}.announcement{background:var(--wine);font-size:12px}.agents-footer{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:36px 25px;border-top:1px solid #ece4e1;color:#97868b;font-size:10px}.agents-footer img{width:120px;height:auto}.agents-footer a{color:inherit}</style>
+<link rel="stylesheet" href="site.css"><link rel="stylesheet" href="agents-1.css"><link rel="stylesheet" href="commerce-upgrades.css">
+<script src="agents-globe-1.js" defer></script></head>
+<body><div class="announcement" data-campaign-end="2026-12-29T23:59:59+08:00"><span class="announcement-copy">2 DELUXE SAMPLES WITH $75+ ORDERS · CODE: SAMPLES · LEARN MORE</span></div><div data-site-header></div>
+<main>
+<!-- agent-network:start -->
+<karseell-agent-network>
+  <section class="ksg-section" aria-label="Our agents and distributor enquiries">
+    <div class="ksg-intro"><div><p class="ksg-eyebrow">Karseell · The global network</p><h1>Our Agents</h1></div><p>Professional haircare, connected worldwide.<br>Explore our network and discover your next opportunity.</p></div>
+    <div class="ksg-layout">
+      <div class="ksg-left">
+        <nav class="ksg-region-tabs" aria-label="Explore regions"><button type="button" data-globe-region="all" aria-pressed="true">All markets</button><button type="button" data-globe-region="americas" aria-pressed="false">Latin America</button><button type="button" data-globe-region="europe" aria-pressed="false">Europe</button><button type="button" data-globe-region="africa" aria-pressed="false">Africa</button><button type="button" data-globe-region="middle-east" aria-pressed="false">Middle East</button><button type="button" data-globe-region="asia" aria-pressed="false">Asia</button></nav>
+        <div class="ksg-map">
+          <div class="ksg-map-label"><span>Across borders. Beyond expectations.</span><p>Global distributor network</p></div>
+          <canvas data-globe tabindex="0" role="img" aria-label="Interactive globe showing distributor markets. Drag or use arrow keys to rotate. Plus and minus zoom; Home resets; Space pauses. You can also select a market in the enquiry form."></canvas>
+          <div class="ksg-region-labels" data-region-labels></div><div class="ksg-tooltip" data-globe-tooltip hidden></div>
+          <p class="ksg-fallback" data-globe-fallback hidden>Explore the regional directory or choose a market in the form to contact our team.</p>
+          <p class="ksg-map-hint">Drag to rotate · Use + / − to zoom</p>
+          <div class="ksg-map-tools" role="group" aria-label="Globe controls"><button type="button" data-globe-action="rotate" aria-label="Pause rotation" aria-pressed="true"></button><button type="button" data-globe-action="out" aria-label="Zoom out">−</button><output data-zoom-value aria-label="Globe zoom">150%</output><button type="button" data-globe-action="in" aria-label="Zoom in">+</button><button type="button" data-globe-action="reset" aria-label="Reset globe"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 9a6 6 0 1 1 1 5M4 4v5h5"/></svg></button></div>
+        </div>
+        <div class="ksg-map-foot"><div><span data-selected-caption>Our global network</span><h2 data-selected-market aria-live="polite">A world of possibilities</h2></div><div><div class="ksg-key"><i></i> Distributor markets</div><p>Select a label or a market to take a closer look.</p></div></div>
+      </div>
+      <aside class="ksg-right" aria-label="Agent directory and enquiry form">
+        <h2 class="ksg-directory-title">OUR APPOINTED PARTNERS</h2>
+        <details class="ksg-partner" open><summary>Latin America agent</summary><div><span>Jerusalem duty free S.A</span><button class="ksg-text-link" type="button" data-agent-focus="americas">View region ↗</button></div></details>
+        <details class="ksg-partner"><summary>South Africa agent</summary><div><span>Vita Lesus (Pty) Ltd</span><button class="ksg-text-link" type="button" data-agent-focus="south-africa">View region ↗</button></div></details>
+        <div class="ksg-form-card"><p class="ksg-eyebrow">Let's grow together</p><h2>Become a partner.</h2><p class="ksg-form-intro">Karseell's agency network is established. Discover distribution opportunities with Ecolchi, Delofil, Pallamina and Romacy. Tell us about your market and our team will be in touch.</p>
+          <form class="ksg-form" data-preview-form>
+            <div class="ksg-form-row"><label class="ksg-field"><span>Name <span class="ksg-required">*</span></span><input name="contact[name]" autocomplete="name" placeholder="Your name" required maxlength="100"></label><label class="ksg-field"><span>Phone <small>(optional)</small></span><input type="tel" name="contact[phone]" autocomplete="tel" placeholder="Country code + number" maxlength="50"></label></div>
+            <label class="ksg-field"><span>Email <span class="ksg-required">*</span></span><input type="email" name="contact[email]" autocomplete="email" placeholder="you@company.com" required maxlength="254"></label>
+            <label class="ksg-field"><span>Market of interest <span class="ksg-required">*</span></span><select name="contact[Market]" data-market-select required aria-label="Market of interest"><option value="" disabled selected>Select a region or country</option></select></label>
+            <label class="ksg-field"><span>Message <span class="ksg-required">*</span></span><textarea name="contact[body]" placeholder="Tell us about your business and distribution plans…" required minlength="10" maxlength="5000" rows="3"></textarea></label>
+            <button class="ksg-submit" type="submit">Send enquiry <span aria-hidden="true">↗</span></button>
+            <p class="ksg-privacy">Your details will be used to respond to your enquiry. Read our <a href="https://www.karseell.com/customer-service/privacy-and-policy/">Privacy Policy</a>.</p>
+            <p class="ksg-form-note" data-form-status role="status" hidden></p>
+            <p class="ksg-form-note" data-preview-note hidden><a href="https://www.karseell.com/customer-service/contact-us/">Contact Us ↗</a></p>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </section>
+</karseell-agent-network>
+<!-- agent-network:end -->
+</main>
+<footer class="agents-footer"><a href="index.html"><img src="assets/karseell-logo.png" alt="Karseell"></a><span>Professional care. A global perspective.</span><a href="https://www.karseell.com/customer-service/contact-us/">Contact Us ↗</a></footer>
+<script src="campaign-countdown.js"></script><script src="site.js"></script><script src="commerce-upgrades.js"></script></body></html>

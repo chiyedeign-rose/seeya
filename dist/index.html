@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karseell — Latest PC + Mobile</title>
+  <style>
+    @font-face{font-family:Poppins;src:url('assets/Poppins-Regular.ttf') format('truetype');font-weight:400}
+    @font-face{font-family:Poppins;src:url('assets/Poppins-SemiBold.ttf') format('truetype');font-weight:600}
+    :root{--wine:#970020;--ink:#191919;--line:#d7d7d7}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);background:#fff;font-family:Poppins,Arial,sans-serif}
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+
+    .site-shell{width:100%;overflow:hidden;background:#fff}
+    .announcement{height:36px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--wine);font-size:12px;font-weight:600;letter-spacing:.02em}
+    .site-nav{position:relative;z-index:10;height:92px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 60px;background:#fff;border-bottom:1px solid var(--line)}
+    .nav-list,.nav-actions{display:flex;align-items:center;gap:31px;margin:0;padding:0;list-style:none}
+    .nav-actions{justify-content:flex-end;gap:26px;font-size:13px}
+    .nav-item{position:relative;height:92px;display:flex;align-items:center}
+    .nav-link{position:relative;height:100%;display:flex;align-items:center;padding:0;color:#222;background:none;border:0;text-decoration:none;font-size:13px}
+    .nav-link::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:5px;background:var(--wine);transform:scaleX(0);transform-origin:center;transition:transform .16s ease}
+    .nav-item:hover>.nav-link::after,.nav-item:focus-within>.nav-link::after,.nav-item.is-menu-open>.nav-link::after{transform:scaleX(1)}
+    .nav-link:hover,.nav-link:focus-visible{color:var(--wine)}
+    .logo{display:grid;place-items:center;text-decoration:none}
+    .logo img{display:block;width:146px;height:auto}
+    .bag-button{display:flex;align-items:center;gap:7px;padding:6px 0;border:0;background:transparent;color:#111}
+    .bag-count{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;color:#fff;background:var(--wine);font-size:10px}
+    .mega-menu{position:fixed;top:128px;left:0;right:0;z-index:9;display:grid;grid-template-columns:1fr 1fr 1fr 2fr;gap:52px;min-height:430px;padding:58px 64px;background:#fff;border-top:1px solid var(--wine);border-bottom:1px solid var(--wine);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s ease,transform .16s ease,visibility .16s ease}
+    .nav-item:hover .mega-menu,.nav-item:focus-within .mega-menu,.nav-item.is-menu-open .mega-menu{opacity:1;visibility:visible;transform:none}
+    .mega-menu h3{margin:0 0 12px;font-size:13px}
+    .mega-menu a{display:block;margin:7px 0;color:#666;text-decoration:none;font-size:12px}
+    .mega-visual{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-self:start}
+    .mega-card{height:250px;display:grid;place-items:center;background:#f6f3f1;color:#6d6d6d;font-size:12px;text-align:center;padding:20px}
+    .search-toggle{display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;background:transparent;color:#111}
+    .search-toggle svg{width:21px;height:21px}
+    .search-panel{position:fixed;top:128px;left:0;right:0;z-index:12;min-height:430px;background:#f4f4f4;border-top:1px solid var(--wine);border-bottom:1px solid var(--wine);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s ease,transform .16s ease,visibility .16s ease}
+    .search-panel.is-open{opacity:1;visibility:visible;transform:none}
+    .search-entry{height:116px;display:flex;align-items:center;justify-content:center;background:#fff}
+    .search-form{width:min(1280px,calc(100% - 120px));display:flex;align-items:center;border-bottom:1px solid #333}
+    .search-input{flex:1;height:62px;padding:0 4px;border:0;outline:0;background:transparent;color:#111;font-size:30px;font-weight:400}
+    .search-input::placeholder{color:#111;opacity:1}
+    .search-submit{display:grid;place-items:center;width:58px;height:58px;padding:0;border:0;background:transparent}
+    .search-submit svg{width:34px;height:34px}
+    .search-content{position:relative;min-height:313px;padding:10px max(64px,calc((100vw - 1280px)/2))}
+    .popular-searches{width:260px;min-height:162px;margin-left:auto;padding:34px 30px;background:#fff;font-size:13px}
+    .popular-searches h3{margin:0 0 8px;font-size:13px}.popular-searches a{display:block;color:#111;text-decoration:none;line-height:1.45}.popular-searches a:hover{color:var(--wine)}
+    .account-toggle{display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;background:transparent;color:#111}
+    .account-toggle svg{width:22px;height:22px}
+
+    .hero{position:relative;width:100%;aspect-ratio:1922/984;background:#eadfdd}
+    .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .42s ease,visibility .42s ease}
+    .slide.is-active{opacity:1;visibility:visible}
+    .slide picture,.slide img{display:block;width:100%;height:100%}
+    .slide img{object-fit:cover}
+    .slide--second img{object-fit:cover}
+    .carousel-arrow{position:absolute;top:50%;z-index:3;display:grid;place-items:center;width:52px;height:52px;border:0;border-radius:50%;color:#fff;background:rgba(20,20,20,.40);font-size:28px;transform:translateY(-50%);transition:background .18s ease,transform .18s ease}
+    .carousel-arrow:hover{background:var(--wine);transform:translateY(-50%) scale(1.04)}
+    .carousel-arrow.prev{left:24px}.carousel-arrow.next{right:24px}
+    .carousel-dots{position:absolute;z-index:3;left:50%;bottom:22px;display:flex;gap:9px;transform:translateX(-50%)}
+    .carousel-dot{width:9px;height:9px;padding:0;border:0;border-radius:999px;background:#a9a9a9;transition:width .18s ease,background .18s ease}
+    .carousel-dot.is-active{width:38px;background:#151515}
+    .tagline img{display:block;width:100%;height:auto}
+
+    .editorial-section,.salon-section{padding:84px 28px;background:#fff}
+    .section-inner{max-width:1864px;margin:0 auto}
+    .section-title{margin:0 0 34px;font-size:34px;line-height:1.12;letter-spacing:.01em}
+    .editor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .editor-card{min-width:0}.editor-card[data-detail-url]{cursor:pointer}.editor-card[data-detail-url]:focus-visible{outline:3px solid var(--wine);outline-offset:5px}.swap-image{position:relative;overflow:hidden;aspect-ratio:595/760;background:#f7f7f7}
+    .swap-image img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;transition:opacity .35s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+    .swap-image .hover-image{opacity:0}.editor-card:hover .swap-image .default-image{opacity:0}.editor-card:hover .swap-image .hover-image{opacity:1;transform:scale(1.025)}
+    .editor-card h3{margin:17px 0 5px;font-size:17px}.editor-card p{margin:0;color:#777;font-size:12px}
+    .shop-button{margin-top:16px;padding:8px 13px;border:1px solid #999;color:#222;background:#fff;font-size:11px;transition:color .18s ease,background .18s ease,border-color .18s ease}.shop-button:hover{border-color:var(--wine);color:#fff;background:var(--wine)}
+    .exclusive-section{display:grid;grid-template-columns:30% 70%;align-items:stretch;max-width:1920px;margin:0 auto;padding:100px 0;background:#fff;scroll-margin-top:128px}.exclusive-copy{display:flex;flex-direction:column;justify-content:center;padding:40px 44px}.exclusive-copy h2{margin:0 0 24px;font-size:56px;line-height:1.12}.exclusive-copy p{margin:0 0 52px;font-size:24px;line-height:1.5}.exclusive-copy a{width:218px;padding:15px 18px;border:1px solid #999;text-align:center;text-decoration:none;font-size:13px}.exclusive-copy a:hover{border-color:var(--wine);color:#fff;background:var(--wine)}
+    .exclusive-media{position:relative;overflow:hidden;aspect-ratio:16/9;background:#111}.exclusive-media video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;background:#000;opacity:0;transition:opacity .2s ease}.exclusive-media.is-playing video{opacity:1}.exclusive-poster{position:absolute;z-index:2;inset:0;width:100%;height:100%;border:0;background-image:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.18)),url('assets/exclusive-layout.png');background-size:142.86% 100%;background-position:right center;background-repeat:no-repeat}.exclusive-media.is-playing .exclusive-poster{display:none}.exclusive-play{display:grid;place-items:center;width:68px;height:68px;margin:auto;border:2px solid #fff;border-radius:50%;color:#fff;background:rgba(0,0,0,.12);font-size:27px}.exclusive-poster:hover .exclusive-play{background:var(--wine)}
+    .exact-section{width:100%;overflow:hidden;background:#fff}.exact-section img{display:block;width:100%;height:auto}.exact-section.collection{position:relative}.exact-hotspot{position:absolute;z-index:2;bottom:14%;width:8%;height:8%;border:0;background:transparent}.exact-hotspot.one{left:31%}.exact-hotspot.two{left:54.5%}.exact-hotspot.three{left:78%}
+    .salon-section{padding-top:72px}.salon-track{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}.salon-card{position:relative;overflow:hidden;border:1px solid #c8c8c8;border-radius:12px;background:#fff}
+    .salon-cover{position:relative;overflow:hidden;aspect-ratio:4/5.4;background:#eee;cursor:pointer}.salon-cover img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .42s ease}.salon-card:hover .salon-cover img{transform:scale(1.05)}.salon-play{position:absolute;z-index:2;top:50%;left:50%;display:grid;place-items:center;width:66px;height:66px;border:3px solid #fff;border-radius:50%;color:#fff;background:rgba(0,0,0,.12);font-size:25px;transform:translate(-50%,-50%);pointer-events:none}
+    .salon-product{display:grid;grid-template-columns:90px 1fr 42px;gap:18px;align-items:center;min-height:152px;padding:18px 20px 18px 12px}.salon-product img{display:block;width:72px;height:104px;object-fit:contain}.salon-product h3{margin:0 0 12px;font-size:13px;line-height:1.2}.salon-product p{margin:0;font-size:14px;font-weight:600}.add-button{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;color:#fff;background:#050505;font-size:22px;line-height:1}.add-button:hover{background:var(--wine)}
+    .home-quality{padding:110px 5% 80px;background:#fff}.quality-main{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1760px;margin:0 auto}.quality-copy h2{margin:0 0 20px;font-size:48px;line-height:1.05}.quality-score{margin:12px 0;color:var(--wine);font-size:56px;font-weight:600}.quality-stars{color:var(--wine);font-size:22px}.quality-copy p{max-width:650px;color:#666;font-size:14px;line-height:1.75}.quality-visual{overflow:hidden;aspect-ratio:1.25/1;background:#f4f4f4}.quality-visual img{display:block;width:100%;height:100%;object-fit:cover}.quality-points{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;max-width:1100px;margin:70px auto 0;text-align:center}.quality-point{font-size:12px}.quality-point span{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 12px;border:1px solid var(--wine);border-radius:50%;color:var(--wine);font-size:20px}.site-footer{padding:84px 6% 76px;color:#fff;background:#8e1724}.site-footer img{display:block;width:170px;filter:brightness(0) invert(1)}.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:66px}.footer-grid p,.footer-grid a{color:#fff;font-size:11px;line-height:1.8;text-decoration:none}.newsletter{display:flex;max-width:420px;margin-top:18px}.newsletter input{flex:1;height:38px;border:0;padding:0 12px}.newsletter button{width:50px;border:0;color:var(--wine);background:#fff}
+    .interactive-catalog{padding:84px 28px 92px;background:#fff}
+    .catalog-block{position:relative;max-width:1864px;margin:0 auto 86px}.catalog-block:last-child{margin-bottom:0}
+    .catalog-header{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:0 0 28px}
+    .catalog-header h2{margin:0;font-size:34px;line-height:1.12;letter-spacing:.01em}
+    .track-actions{display:flex;gap:10px}.track-arrow{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--wine);border-radius:50%;color:var(--wine);background:#fff;font-size:25px}.track-arrow:hover{color:#fff;background:var(--wine)}
+    .card-track{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;padding:0 0 12px;scroll-snap-type:x mandatory;scroll-behavior:smooth;cursor:grab;touch-action:pan-y;scrollbar-width:none}.card-track::-webkit-scrollbar{display:none}.card-track.is-dragging{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none}
+    .catalog-card{flex:0 0 calc((100% - 48px)/4);min-width:270px;scroll-snap-align:start;color:#202020;text-decoration:none;user-select:none}
+    .card-image{overflow:hidden;background:#f6f6f6}.card-image img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:transform .42s cubic-bezier(.2,.7,.2,1)}.catalog-card:hover .card-image img{transform:scale(1.075)}
+    .model-card .card-image{aspect-ratio:595/760}.product-card .card-image{aspect-ratio:595/898}
+    .catalog-card h3{margin:16px 0 5px;font-size:15px}.catalog-card p{margin:0;color:#777;font-size:11px}.catalog-card .shop-link{display:inline-block;margin-top:14px;padding:5px 9px;border:1px solid #aaa;color:#333;background:#fff;font-size:9px}.catalog-card .shop-link:hover{border-color:var(--wine);color:#fff;background:var(--wine)}
+
+    .modal-layer{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:22px;background:rgba(0,0,0,.58)}
+    .modal-layer[hidden]{display:none}
+    .lead-popup{position:relative;display:grid;grid-template-columns:1fr 1fr;width:min(758px,calc(100vw - 32px));min-height:543px;background:#fff;box-shadow:0 28px 90px rgba(0,0,0,.36)}
+    .popup-art{min-height:543px;background:#f2f1f4 url('assets/popup-reference.png') left top/758px 543px no-repeat}
+    .popup-form{position:relative;display:flex;flex-direction:column;padding:38px 22px 17px;background:#fff;text-align:center}
+    .popup-form h2{margin:0 auto 17px;max-width:310px;color:#b63a52;font-size:23px;line-height:1.12}
+    .popup-copy{margin:0 auto 20px;max-width:310px;color:#9a9a9a;font-size:8.5px;line-height:1.35;text-transform:uppercase}
+    .popup-control{width:100%;min-height:46px;margin:0 0 9px;padding:0 15px;border:1px solid #777;border-radius:999px;color:#444;background:#fff;outline:none;font-size:12px}
+    .popup-control:focus{border-color:var(--wine);box-shadow:0 0 0 3px rgba(151,0,32,.12)}
+    .popup-control::placeholder{color:#bbb}
+    textarea.popup-control{min-height:52px;padding-top:9px;border-radius:22px;resize:none;line-height:1.2}
+    .popup-submit{width:100%;min-height:50px;border:0;border-radius:999px;color:#fff;background:#ad253b;font-size:13px}
+    .popup-submit:hover{background:#8e1730}
+    .popup-dismiss{align-self:center;margin:4px 0 0;padding:0 12px;border:0;color:#333;background:transparent;font-size:12px}
+    .popup-close{position:absolute;z-index:2;right:10px;top:8px;width:34px;height:34px;border:0;color:#333;background:transparent;font-size:27px;font-weight:300}
+    .popup-legal{margin:auto 0 0;color:#8a8a8a;font-size:7px;line-height:1.25}.popup-status{min-height:13px;margin:4px 0 0;color:var(--wine);font-size:9px;text-align:center}
+    .reopen{position:fixed;right:24px;bottom:24px;z-index:30;padding:12px 18px;color:#fff;background:var(--wine);border:0;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+    .cart-toast{position:fixed;right:24px;bottom:24px;z-index:70;max-width:320px;padding:14px 18px;border-radius:4px;color:#fff;background:#181818;box-shadow:0 10px 32px rgba(0,0,0,.28);font-size:13px;transform:translateY(20px);opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease}.cart-toast.is-visible{opacity:1;transform:none}
+    .account-layer{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:26px;background:rgba(0,0,0,.58)}
+    .account-layer[hidden]{display:none}
+    .account-dialog{position:relative;display:grid;grid-template-columns:1.15fr 1fr;width:min(1020px,calc(100vw - 52px));min-height:630px;padding:64px 76px 60px;background:#fff;box-shadow:0 26px 90px rgba(0,0,0,.35)}
+    .account-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border:0;background:transparent;color:#222;font-size:28px;font-weight:300}
+    .signin-pane{padding-right:42px;border-right:1px solid #d8d8d8}
+    .club-pane{display:flex;flex-direction:column;padding-left:48px}
+    .account-dialog h2{margin:0 0 20px;font-size:26px;letter-spacing:.01em}
+    .account-label{display:block;margin:0 0 22px;color:#222;font-size:12px}
+    .account-label span{display:block;margin-bottom:9px}
+    .account-input{width:100%;height:42px;padding:0;border:0;border-bottom:1px solid #444;outline:none;font-size:14px}
+    .password-wrap{position:relative}.password-wrap .account-input{padding-right:42px}.password-toggle{position:absolute;right:0;bottom:6px;width:34px;height:30px;border:0;background:transparent;color:#555}
+    .account-row{display:flex;align-items:center;justify-content:space-between;margin:10px 0 24px;font-size:12px}
+    .remember{display:flex;align-items:center;gap:9px}.remember input{accent-color:var(--wine)}
+    .account-link{color:#222;text-decoration:underline}.account-link:hover{color:var(--wine)}
+    .account-legal{margin:0 0 20px;font-size:11px;line-height:1.6}
+    .brand-action{width:100%;height:50px;border:0;color:#fff;background:var(--wine);font-size:12px;font-weight:600;text-transform:uppercase}.brand-action:hover{background:#770019}
+    .or-line{display:flex;align-items:center;gap:14px;margin:16px 0;font-size:12px}.or-line::before,.or-line::after{content:"";height:1px;flex:1;background:#d7d7d7}
+    .social-title{margin:0 0 6px;font-size:14px;font-weight:600}.social-copy{margin:0 0 18px;font-size:12px;line-height:1.5}
+    .social-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px}.social-button{height:48px;border:1px solid var(--wine);color:var(--wine);background:#fff;font-size:12px;font-weight:600}.social-button:hover{color:#fff;background:var(--wine)}
+    .privacy-copy{margin:12px 0 0;color:#555;font-size:10px;line-height:1.55}
+    .club-copy{margin:0 0 14px;font-size:12px;line-height:1.6}.club-benefits{margin:0;padding-left:20px;font-size:12px;line-height:1.7}.club-benefits li::marker{color:var(--wine)}
+    .club-pane .brand-action{margin-top:auto}
+
+    @media(max-width:720px){
+      .announcement{height:20px;font-size:7px}
+      .site-nav{height:44px;grid-template-columns:36px 1fr 36px;padding:0 9px}
+      .nav-list,.nav-actions{display:none}
+      .logo{justify-self:center}.logo img{width:90px}
+      .mobile-icon{display:block;border:0;background:none;font-size:18px}
+      .hero{aspect-ratio:960/1289}
+      .slide--first img{object-fit:cover}
+      .slide--second img{object-fit:contain;background:#e9dcda}
+      .carousel-arrow{width:34px;height:34px;font-size:19px}.carousel-arrow.prev{left:8px}.carousel-arrow.next{right:8px}
+      .carousel-dots{bottom:10px}
+      .tagline img{min-height:90px;object-fit:cover}
+      .editorial-section,.salon-section{padding:46px 14px}.section-title{margin-bottom:20px;font-size:24px}.editor-grid{grid-template-columns:1fr;gap:34px}.editor-card h3{font-size:14px}.exclusive-section{grid-template-columns:1fr;padding:48px 14px;scroll-margin-top:64px}.exclusive-copy{padding:0 8px 34px}.exclusive-copy h2{font-size:38px}.exclusive-copy p{margin-bottom:26px;font-size:18px}.exclusive-copy a{width:190px}.exclusive-media{aspect-ratio:16/9}.exact-section{overflow-x:auto}.exact-section img{width:960px;max-width:none}.exact-section.collection img{width:960px}.exact-hotspot{display:none}.salon-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.salon-track::-webkit-scrollbar{display:none}.salon-card{flex:0 0 82vw;scroll-snap-align:start}.salon-product{grid-template-columns:64px 1fr 38px;min-height:120px}.salon-product img{width:54px;height:82px}.home-quality{padding:60px 14px}.quality-main{grid-template-columns:1fr;gap:36px}.quality-copy h2{font-size:32px}.quality-score{font-size:44px}.quality-points{grid-template-columns:repeat(2,1fr);gap:32px;margin-top:48px}.site-footer{padding:58px 24px}.footer-grid{grid-template-columns:1fr;gap:34px;margin-top:42px}
+      .interactive-catalog{padding:46px 14px 56px}.catalog-block{margin-bottom:56px}.catalog-header{align-items:flex-end;margin-bottom:18px}.catalog-header h2{font-size:24px}.track-arrow{width:36px;height:36px;font-size:20px}.card-track{gap:10px}.catalog-card{flex-basis:78vw;min-width:0}.catalog-card h3{font-size:13px}.model-card .card-image{aspect-ratio:595/760}
+      .modal-layer{padding:10px}
+      .lead-popup{grid-template-columns:1fr;width:min(430px,calc(100vw - 20px));max-height:94vh;overflow:auto}.popup-art{min-height:260px;background-size:363px 260px}.popup-form{padding:32px 18px 18px}.popup-form h2{font-size:21px}.popup-close{color:#111;background:rgba(255,255,255,.8);border-radius:50%}
+      .account-dialog{grid-template-columns:1fr;width:min(520px,calc(100vw - 20px));max-height:90vh;min-height:0;overflow:auto;padding:50px 26px 28px}.signin-pane{padding:0 0 34px;border-right:0;border-bottom:1px solid #d8d8d8}.club-pane{padding:34px 0 0}.club-pane .brand-action{margin-top:28px}.social-actions{grid-template-columns:1fr}
+    }
+    @media(min-width:721px){.mobile-icon{display:none}}
+  </style>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="mobile-plan.css" />
+  <link rel="stylesheet" href="commerce-upgrades.css" />
+</head>
+<body class="home-page">
+  <div class="site-shell">
+    <div class="announcement">2 DELUXE SAMPLES WITH $75+ ORDERS &nbsp;·&nbsp; CODE: SAMPLES &nbsp;·&nbsp; LEARN MORE</div>
+    <div data-site-header></div>
+    <section class="search-panel" id="searchPanel" aria-label="Site search">
+      <div class="search-entry"><form class="search-form" id="searchForm"><input class="search-input" id="searchInput" type="search" placeholder="I'm Looking for..." aria-label="Search products" /><button class="search-submit" type="submit" aria-label="Submit search"><svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="17" cy="17" r="12" stroke="currentColor" stroke-width="2"/><path d="m26 26 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></form></div>
+      <div class="search-content"><div class="popular-searches"><h3>Popular Searches</h3><a href="#">Hair Mask</a><a href="#">Collagen</a><a href="#">Travel Size</a><a href="#">Hair Oil</a></div></div>
+    </section>
+
+    <section class="hero" aria-label="Featured collections">
+      <article class="slide slide--first is-active">
+        <picture><source media="(max-width:1024px)" srcset="assets/hero-1-mobile.jpg" /><img src="assets/hero-1-desktop.jpg" alt="Karseell Hair Power Smooth Repair" /></picture>
+      </article>
+      <article class="slide slide--second">
+        <picture><source media="(max-width:1024px)" srcset="assets/hero-2-mobile.jpg" /><img src="assets/hero-2.png" alt="Make room for beautiful hair" /></picture>
+        <div class="mobile-hero-copy"><h1>Nouris Hair<br />Empower Beauty</h1><p>Science-Powered Salon Care</p></div>
+      </article>
+      <button class="carousel-arrow prev" type="button" aria-label="Previous slide">‹</button>
+      <button class="carousel-arrow next" type="button" aria-label="Next slide">›</button>
+      <div class="carousel-dots"><button class="carousel-dot is-active" type="button" aria-label="Show slide 1"></button><button class="carousel-dot" type="button" aria-label="Show slide 2"></button></div>
+    </section>
+    <div class="tagline"><p>Karseell, Formulations Are <strong>Concise, Concentrated, Crafted With French Technology</strong></p></div>
+
+    <section class="editorial-section" aria-labelledby="editorsTitle">
+      <div class="section-inner">
+        <h2 class="section-title" id="editorsTitle">EDITOR'S SELECTION</h2>
+        <div class="editor-tabs mobile-only" role="tablist" aria-label="Editor's selection"><button type="button" role="tab" id="editorNewTab" aria-selected="false" aria-controls="editorGrid" data-editor-tab="new">NEW</button><button type="button" role="tab" id="editorBestTab" aria-selected="true" aria-controls="editorGrid" data-editor-tab="best">BESTSELLERS</button></div>
+        <div class="editor-grid" id="editorGrid" role="tabpanel" aria-labelledby="editorBestTab">
+          <article class="editor-card" data-detail-url="product.html" role="link" tabindex="0" aria-label="View Collagen Hair Mask details"><div class="swap-image"><img class="default-image" src="assets/editor-1.jpg" alt="Collagen Hair Mask" loading="lazy" decoding="async" /><img class="hover-image" src="assets/editor-hover-1.png" alt="Collagen Hair Mask texture composition" loading="lazy" decoding="async" /></div><h3>COLLAGEN HAIR MASK</h3><p>Smooths frizz and restores shine</p><button class="shop-button" data-add-cart data-product="Collagen Hair Mask" type="button">SHOP NOW</button></article>
+          <article class="editor-card"><div class="swap-image"><img class="default-image" src="assets/editor-2.jpg" alt="Maca Essence Oil" loading="lazy" decoding="async" /><img class="hover-image" src="assets/editor-hover-2.png" alt="Golden hair oil texture" loading="lazy" decoding="async" /></div><h3>MACA ESSENCE OIL</h3><p>Seals softness without heaviness</p><button class="shop-button" data-add-cart data-product="Maca Essence Oil" type="button">SHOP NOW</button></article>
+          <article class="editor-card"><div class="swap-image"><img class="default-image" src="assets/editor-3.jpg" alt="Deep Cleansing Shampoo" loading="lazy" decoding="async" /><img class="hover-image" src="assets/editor-hover-3.jpg" alt="Deep cleansing hair treatment" loading="lazy" decoding="async" /></div><h3>DEEP CLEANSING SHAMPOO</h3><p>Gently cleanses and prepares hair</p><button class="shop-button" data-add-cart data-product="Deep Cleansing Shampoo" type="button">SHOP NOW</button></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="exclusive-section" id="exclusiveVideo" aria-labelledby="exclusiveTitle">
+      <div class="exclusive-copy"><h2 id="exclusiveTitle">KARSEELL<br /> EXCLUSIVE</h2><p>Professional Haircare for Your<br /> Brightest and Most Hydrated Hair</p><a href="product.html">LEARN MORE &nbsp; ▶</a></div>
+      <div class="exclusive-media" id="exclusiveMedia"><video id="exclusivePlayer" controls playsinline preload="none"><source src="assets/brand-video.mp4" type="video/mp4" /></video><button class="exclusive-poster" id="exclusivePlay" type="button" aria-label="Play Karseell brand video"><span class="exclusive-play">▶</span></button></div>
+    </section>
+
+    <section class="collection-section" aria-label="Collagen repair product collection">
+      <div class="collection-visual">
+        <picture><source media="(max-width:1024px)" srcset="assets/collection-model-clean.png" /><img class="collection-model" src="assets/collection-model.png" alt="Collagen repair line — professional hair treatment" loading="lazy" decoding="async" /></picture>
+        <div class="mobile-collection-copy"><h2>COLLAGEN REPAIR<br />LINE</h2><p>COLLAGEN REPAIR LINE<br />JUST A TXT</p></div>
+      </div>
+      <div class="collection-products">
+        <div class="collection-track" data-drag-track>
+          <article class="collection-card"><a class="collection-image" href="product.html"><img src="assets/collection-brown.png" alt="Karseell Brown Hair Mask" loading="lazy" decoding="async" /></a><h3>KARSEELL<br />COLLAGEN HAIR TREATMENT</h3><button class="shop-button" data-add-cart data-product="Brown Hair Mask" type="button">SHOP NOW</button></article>
+          <article class="collection-card"><a class="collection-image" href="product.html"><picture><source media="(max-width:1024px)" srcset="assets/collection-brown.png" /><img src="assets/collection-purple.png" alt="Karseell Collagen Hair Mask" loading="lazy" decoding="async" /></picture></a><h3>KARSEELL<br />COLLAGEN HAIR TREATMENT</h3><button class="shop-button" data-add-cart data-product="Collagen Hair Mask" type="button">SHOP NOW</button></article>
+          <article class="collection-card"><a class="collection-image" href="product.html"><img src="assets/collection-brown.png" alt="Karseell Brown Hair Mask" /></a><h3>KARSEELL<br />COLLAGEN HAIR TREATMENT</h3><button class="shop-button" data-add-cart data-product="Brown Hair Mask" type="button">SHOP NOW</button></article>
+          <article class="collection-card mobile-only"><a class="collection-image" href="product.html"><img src="assets/collection-brown.png" alt="Karseell Collagen Hair Treatment" /></a><h3>KARSEELL<br />COLLAGEN HAIR TREATMENT</h3><button class="shop-button" data-add-cart data-product="Collagen Hair Mask" type="button">SHOP NOW</button></article>
+        </div>
+        <div class="collection-progress" aria-hidden="true"><span></span></div>
+      </div>
+    </section>
+    <section class="exact-section beauty-section" aria-label="Beauty born from science"><img class="beauty-desktop" src="assets/beauty-science.png" alt="Beauty born from science — Karseell salon treatment benefits" /><div class="beauty-mobile mobile-only"><div class="beauty-photo"><img src="assets/beauty-science.png" alt="Professional Karseell salon hair treatment" /></div><div class="beauty-copy"><h2>BEAUTY BORN<br />FROM SCIENCE</h2><p>Restore softness, shine, and strength for<br />dry or damaged hair.</p><dl><div><dt>SHINE</dt><dd>Helps hair look smoother, softer, and more flexible.</dd></div><div><dt>ELASTICITY</dt><dd>Nourishes strands for a silky, manageable feel.</dd></div><div><dt>SOFTNESS</dt><dd>Designed for brittle, over-processed, or frizz-prone hair.</dd></div></dl></div></div></section>
+
+    <section class="interactive-catalog" aria-label="Hair mood and daily essentials">
+      <div class="catalog-block">
+        <div class="catalog-header"><h2>FIND YOUR HAIR MOOD</h2><div class="track-actions"><button class="track-arrow" data-track-prev="hairTrack" type="button" aria-label="Previous hair mood">‹</button><button class="track-arrow" data-track-next="hairTrack" type="button" aria-label="Next hair mood">›</button></div></div>
+        <div class="card-track" id="hairTrack" data-drag-track>
+          <article class="catalog-card model-card"><div class="card-image"><img src="assets/hair-1.jpg" alt="Dry and frizzy hair" draggable="false" /></div><h3>DRY &amp; FRIZZY HAIR</h3><p>Deeply nourish &amp; moisturize</p><button class="shop-link" data-add-cart data-product="Dry &amp; Frizzy Hair Routine" type="button">SHOP NOW</button></article>
+          <article class="catalog-card model-card"><div class="card-image"><img src="assets/hair-2.jpg" alt="Oily hair" draggable="false" /></div><h3>OILY HAIR</h3><p>Deeply nourish &amp; moisturize</p><button class="shop-link" data-add-cart data-product="Oily Hair Routine" type="button">SHOP NOW</button></article>
+          <article class="catalog-card model-card"><div class="card-image"><img src="assets/hair-3.jpg" alt="Curly hair" draggable="false" /></div><h3>CURLY HAIR</h3><p>Deeply nourish &amp; moisturize</p><button class="shop-link" data-add-cart data-product="Curly Hair Routine" type="button">SHOP NOW</button></article>
+          <article class="catalog-card model-card"><div class="card-image"><img src="assets/hair-4.jpg" alt="Damaged hair" draggable="false" /></div><h3>DAMAGED HAIR</h3><p>Regain your strength &amp; repair</p><button class="shop-link" data-add-cart data-product="Damaged Hair Routine" type="button">SHOP NOW</button></article>
+        </div>
+      </div>
+      <div class="catalog-block">
+        <div class="catalog-header"><h2>DAILY ESSENTIALS FOR<br />EVERY HAIR TYPE</h2><div class="track-actions"><button class="track-arrow" data-track-prev="productTrack" type="button" aria-label="Previous daily essentials">‹</button><button class="track-arrow" data-track-next="productTrack" type="button" aria-label="Next daily essentials">›</button></div></div>
+        <div class="card-track" id="productTrack" data-drag-track>
+          <a class="catalog-card product-card" href="product.html"><div class="card-image"><img src="assets/essential-1.jpg" alt="Hair mask" draggable="false" /></div><h3>HAIR MASK</h3></a>
+          <a class="catalog-card product-card" href="#"><div class="card-image"><img src="assets/essential-2.jpg" alt="Shampoo" draggable="false" /></div><h3>SHAMPOO</h3></a>
+          <a class="catalog-card product-card" href="#"><div class="card-image"><img src="assets/essential-3.jpg" alt="Hair oil" draggable="false" /></div><h3>HAIR OIL</h3></a>
+          <a class="catalog-card product-card" href="#"><div class="card-image"><img src="assets/essential-4.jpg" alt="Conditioner" draggable="false" /></div><h3>CONDITIONER</h3></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="salon-section" id="salonVideos" aria-labelledby="salonTitle">
+      <div class="section-inner">
+        <h2 class="section-title" id="salonTitle">WE CRAFT WORLD-CLASS SALON HAIR AESTHETICS,<br />WHERE PROFESSIONAL HAIRCARE BECOMES TIMELESS GLOBAL ART.</h2>
+        <div class="salon-track">
+          <article class="salon-card"><div class="salon-cover"><img src="assets/salon-1.jpg" alt="Karseell salon craftsmanship" /><span class="salon-play">▶</span></div><div class="salon-product"><img src="assets/essential-2.jpg" alt="Deep cleansing shampoo" /><div><h3>KARSEELL DEEP CLEANSING SHAMPOO</h3><p>$88</p></div><button class="add-button" data-add-cart data-product="Deep Cleansing Shampoo" type="button" aria-label="Add Deep Cleansing Shampoo to bag">+</button></div></article>
+          <article class="salon-card"><div class="salon-cover"><img src="assets/salon-2.jpg" alt="Karseell salon model" /><span class="salon-play">▶</span></div><div class="salon-product"><img src="assets/essential-4.jpg" alt="Repair conditioner" /><div><h3>KARSEELL REPAIR CONDITIONER</h3><p>$88</p></div><button class="add-button" data-add-cart data-product="Repair Conditioner" type="button" aria-label="Add Repair Conditioner to bag">+</button></div></article>
+          <article class="salon-card"><div class="salon-cover"><img src="assets/salon-3.jpg" alt="Karseell professional care" /><span class="salon-play">▶</span></div><div class="salon-product"><img src="assets/essential-2.jpg" alt="Moisture shampoo" /><div><h3>KARSEELL MOISTURE SHAMPOO</h3><p>$88</p></div><button class="add-button" data-add-cart data-product="Moisture Shampoo" type="button" aria-label="Add Moisture Shampoo to bag">+</button></div></article>
+          <article class="salon-card"><div class="salon-cover"><img src="assets/salon-4.jpg" alt="Karseell hair oil ritual" /><span class="salon-play">▶</span></div><div class="salon-product"><img src="assets/essential-3.jpg" alt="Maca essence oil" /><div><h3>KARSEELL MACA ESSENCE OIL</h3><p>$88</p></div><button class="add-button" data-add-cart data-product="Maca Essence Oil" type="button" aria-label="Add Maca Essence Oil to bag">+</button></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-quality" aria-labelledby="qualityTitle"><div class="quality-main"><div class="quality-copy"><h2 id="qualityTitle">QUALITY STANDS<br />AS THE TRUEST PRAISE</h2><div class="quality-score">4.7 <small>BASED ON 21,000 REVIEWS</small></div><div class="quality-review"><div class="quality-stars">★★★★★</div><p>Discover the Karseell community and the haircare routines they love.</p><div class="review-controls"><button type="button" aria-label="Previous review">‹</button><button type="button" aria-label="Next review">›</button></div></div></div><div class="quality-visual"><img src="assets/quality-model.jpg" alt="Karseell Repair Set with salon model" /></div></div><div class="quality-points"><div class="quality-point"><img src="assets/service-quality.png" alt="" />GREAT PRICES<br />&amp; QUALITY</div><div class="quality-point"><img src="assets/service-payment.png" alt="" />SAFE &amp; SECURE<br />PAYMENTS</div><div class="quality-point"><img src="assets/service-delivery.png" alt="" />RELIABLE<br />DELIVERY</div><div class="quality-point"><img src="assets/service-support.png" alt="" />AFTER-SALES<br />SUPPORT</div></div></section>
+    <footer class="site-footer"><img src="assets/karseell-logo.png" alt="Karseell" /><div class="footer-grid"><div><p>HOME<br />BESTSELLERS<br />HAIRCARE PRODUCTS<br />VALUE SETS</p><p>© Karseell. All rights reserved.</p></div><div><p>Sign up to our newsletter to receive information about our latest offers and get 10% off your next purchase.</p><form class="newsletter"><input type="email" placeholder="Email address" aria-label="Newsletter email" /><button type="submit" aria-label="Subscribe">→</button></form></div></div></footer>
+  </div>
+
+  <button class="reopen" id="reopen" type="button" hidden>Open inquiry</button>
+  <div class="modal-layer" id="leadLayer">
+    <section class="lead-popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+      <div class="popup-art" aria-hidden="true"></div>
+      <form class="popup-form" id="leadForm" aria-label="Wholesale OEM and ODM inquiry">
+        <button class="popup-close" id="popupClose" type="button" aria-label="Close inquiry popup">×</button>
+        <h2 id="popupTitle">Unlock Exclusive<br />Wholesale, OEM &amp; ODM<br />Opportunities</h2>
+        <p class="popup-copy">Partner with Karseell to create your own signature haircare line or stock our premium products. Fill out the form below to get personalized consultation and offers.</p>
+        <label><span hidden>Phone Number</span><input class="popup-control" name="phone" type="tel" autocomplete="tel" placeholder="Phone Number" /></label>
+        <label><span hidden>Email Address</span><input class="popup-control" id="leadEmail" name="email" type="email" autocomplete="email" placeholder="Email Address (Required)" required /></label>
+        <label><span hidden>Distribution or OEM needs</span><textarea class="popup-control" name="needs" placeholder="Briefly describe your distribution or OEM needs"></textarea></label>
+        <button class="popup-submit" type="submit">Submit Inquiry</button>
+        <button class="popup-dismiss" id="popupDismiss" type="button">No Thanks</button>
+        <p class="popup-status" id="popupStatus" aria-live="polite"></p>
+        <p class="popup-legal">By submitting this form, you agree to our Terms of Service and Privacy Policy, and consent to receive updates from Karseell regarding wholesale, OEM &amp; ODM opportunities. Unsubscribe anytime.</p>
+      </form>
+    </section>
+  </div>
+  <div class="cart-toast" id="cartToast" role="status" aria-live="polite"></div>
+
+  <div class="account-layer" id="accountLayer" hidden>
+    <section class="account-dialog" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+      <button class="account-close" id="accountClose" type="button" aria-label="Close account dialog">×</button>
+      <form class="signin-pane" id="signinForm">
+        <h2 id="accountTitle">SIGN IN</h2>
+        <label class="account-label"><span>Enter your email*</span><input class="account-input" id="signinEmail" type="email" autocomplete="email" required /></label>
+        <label class="account-label"><span>Password*</span><span class="password-wrap"><input class="account-input" id="signinPassword" type="password" autocomplete="current-password" required /><button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password">◉</button></span></label>
+        <div class="account-row"><label class="remember"><input type="checkbox" /> Remember me</label><a class="account-link" href="#">Forgot your password?</a></div>
+        <p class="account-legal">By signing in you agree to our <a class="account-link" href="#">Terms of Use</a>, <a class="account-link" href="#">Privacy Policy</a> and <a class="account-link" href="#">Karseell Club Terms</a>.</p>
+        <button class="brand-action" type="submit">Sign in</button>
+        <div class="or-line">OR</div>
+        <h3 class="social-title">SIGN IN WITH ONE CLICK</h3><p class="social-copy">Use your social account for a faster Karseell sign-in.</p>
+        <div class="social-actions"><button class="social-button" type="button">GOOGLE</button><button class="social-button" type="button">FACEBOOK</button></div>
+        <p class="privacy-copy">Your account information is handled according to the provider's privacy policy and Karseell's terms of use.</p>
+      </form>
+      <aside class="club-pane"><h2>KARSEELL CLUB</h2><p class="club-copy">Unlock a world of exclusive Karseell perks and tailor-made haircare experiences:</p><ul class="club-benefits"><li>Earn Points &amp; Redeem Rewards</li><li>Free Shipping</li><li>Birthday Gift</li><li>Exclusive Offers</li><li>Early Access</li></ul><button class="brand-action" type="button">Create my account</button></aside>
+    </section>
+  </div>
+
+  <aside class="mobile-holiday-promo" id="mobileHolidayPromo" aria-label="Holiday gift promotion">
+    <span>FIND THE PERFECT HOLIDAY GIFT</span>
+    <button type="button" id="mobileHolidayClose" aria-label="Close holiday gift promotion">×</button>
+  </aside>
+  <button class="mobile-back-to-top" id="mobileBackToTop" type="button" aria-label="Back to top" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 15 7-7 7 7" /></svg>
+  </button>
+  <nav class="mobile-home-nav" aria-label="Quick navigation">
+    <button type="button" data-mobile-menu-target="products">Products</button>
+    <button type="button" data-mobile-menu-target="best-sellers">Best sellers</button>
+    <a href="brand.html">About Us</a>
+  </nav>
+
+  <script src="site.js"></script>
+  <script src="mobile-plan.js"></script>
+  <script src="commerce-upgrades.js"></script>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')];
+    const dots=[...document.querySelectorAll('.carousel-dot')];
+    let slideIndex=matchMedia('(max-width:1024px)').matches?1:0;
+    function showSlide(index){slideIndex=(index+slides.length)%slides.length;slides.forEach((s,i)=>s.classList.toggle('is-active',i===slideIndex));dots.forEach((d,i)=>d.classList.toggle('is-active',i===slideIndex));}
+    document.querySelector('.prev').addEventListener('click',()=>showSlide(slideIndex-1));
+    document.querySelector('.next').addEventListener('click',()=>showSlide(slideIndex+1));
+    dots.forEach((dot,i)=>dot.addEventListener('click',()=>showSlide(i)));
+    const hero=document.querySelector('.hero');
+    let heroTouch;
+    hero.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')heroTouch={x:event.clientX,y:event.clientY};},{passive:true});
+    hero.addEventListener('pointerup',event=>{if(!heroTouch)return;const dx=event.clientX-heroTouch.x,dy=event.clientY-heroTouch.y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))showSlide(slideIndex+(dx<0?1:-1));heroTouch=null;},{passive:true});
+    hero.addEventListener('pointercancel',()=>{heroTouch=null;},{passive:true});
+    setInterval(()=>{if(!heroTouch&&!document.hidden&&!matchMedia('(max-width:1024px)').matches)showSlide(slideIndex+1);},13000);
+
+    document.querySelectorAll('[data-editor-tab]').forEach(tab=>tab.addEventListener('click',()=>{
+      document.querySelectorAll('[data-editor-tab]').forEach(item=>item.setAttribute('aria-selected',String(item===tab)));
+      document.getElementById('editorGrid').classList.toggle('is-new',tab.dataset.editorTab==='new');
+      document.getElementById('editorGrid').setAttribute('aria-labelledby',tab.id);
+    }));
+
+    document.querySelectorAll('[data-drag-track]').forEach(track=>{
+      let dragging=false,startX=0,startScroll=0,moved=false;
+      track.addEventListener('pointerdown',e=>{moved=false;if(e.pointerType!=='mouse'||!matchMedia('(min-width:1025px) and (hover:hover) and (pointer:fine)').matches)return;dragging=true;startX=e.clientX;startScroll=track.scrollLeft;track.classList.add('is-dragging');});
+      track.addEventListener('pointermove',e=>{if(!dragging)return;const delta=e.clientX-startX;if(Math.abs(delta)>5)moved=true;track.scrollLeft=startScroll-delta;});
+      const stop=e=>{dragging=false;track.classList.remove('is-dragging');if(track.hasPointerCapture?.(e.pointerId))track.releasePointerCapture(e.pointerId);};
+      track.addEventListener('pointerup',stop);track.addEventListener('pointercancel',stop);track.addEventListener('pointerleave',e=>{if(dragging)stop(e);});
+      track.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();}},true);
+    });
+    document.querySelectorAll('[data-track-next]').forEach(button=>button.addEventListener('click',()=>{const track=document.getElementById(button.dataset.trackNext);track.scrollBy({left:track.clientWidth*.82,behavior:'smooth'});}));
+    document.querySelectorAll('[data-track-prev]').forEach(button=>button.addEventListener('click',()=>{const track=document.getElementById(button.dataset.trackPrev);track.scrollBy({left:-track.clientWidth*.82,behavior:'smooth'});}));
+
+    const exclusiveMedia=document.getElementById('exclusiveMedia');
+    const exclusivePlayer=document.getElementById('exclusivePlayer');
+    function playExclusive(){exclusiveMedia.classList.add('is-playing');exclusivePlayer.play().catch(()=>{});}
+    document.getElementById('exclusivePlay').addEventListener('click',playExclusive);
+    exclusivePlayer.addEventListener('ended',()=>exclusiveMedia.classList.remove('is-playing'));
+    const salonSources=['https://media.karseell.com/videos/01-homepage/HOMEPAGE_06_cbTYa4_pRtU.mp4','https://media.karseell.com/videos/01-homepage/HOMEPAGE_06_cbTYa4_pRtU.mp4','https://media.karseell.com/videos/01-homepage/HOMEPAGE_02_FbmdDe9FbuE.mp4','https://media.karseell.com/videos/01-homepage/HOMEPAGE_03_P9AOlHPKgyk.mp4'];
+    document.querySelectorAll('.salon-cover').forEach((cover,index)=>{cover.tabIndex=0;cover.setAttribute('role','button');cover.setAttribute('aria-label','Play video in this card');const play=()=>{if(cover.classList.contains('is-playing'))return;cover.classList.add('is-playing');const player=document.createElement('video');player.src=salonSources[index];player.controls=true;player.playsInline=true;player.preload='metadata';cover.appendChild(player);player.play().catch(()=>{});};cover.addEventListener('click',play);cover.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();play();}});});
+    document.querySelector('.newsletter').addEventListener('submit',event=>event.preventDefault());
+
+    const searchToggle=document.getElementById('searchToggle');
+    const searchPanel=document.getElementById('searchPanel');
+    const searchInput=document.getElementById('searchInput');
+    function setSearch(open){searchPanel.classList.toggle('is-open',open);searchToggle.setAttribute('aria-expanded',String(open));}
+
+    const accountLayer=document.getElementById('accountLayer');
+    const signinEmail=document.getElementById('signinEmail');
+    function openAccount(){setSearch(false);accountLayer.hidden=false;setTimeout(()=>signinEmail.focus(),50);}
+    function closeAccount(){accountLayer.hidden=true;}
+    document.getElementById('accountToggle').addEventListener('click',openAccount);
+    document.getElementById('accountClose').addEventListener('click',closeAccount);
+    accountLayer.addEventListener('click',e=>{if(e.target===accountLayer)closeAccount();});
+    document.getElementById('signinForm').addEventListener('submit',e=>e.preventDefault());
+    document.getElementById('passwordToggle').addEventListener('click',()=>{const p=document.getElementById('signinPassword');p.type=p.type==='password'?'text':'password';});
+
+    const leadLayer=document.getElementById('leadLayer');
+    const reopen=document.getElementById('reopen');
+    const leadForm=document.getElementById('leadForm');
+    const leadEmail=document.getElementById('leadEmail');
+    const popupStatus=document.getElementById('popupStatus');
+    function closePopup(){leadLayer.hidden=true;reopen.hidden=false;}
+    function openPopup(){leadLayer.hidden=false;reopen.hidden=true;setTimeout(()=>leadEmail.focus(),50);}
+    document.getElementById('popupClose').addEventListener('click',closePopup);
+    document.getElementById('popupDismiss').addEventListener('click',closePopup);
+    reopen.addEventListener('click',openPopup);
+    leadLayer.addEventListener('click',e=>{if(e.target===leadLayer)closePopup();});
+    leadForm.addEventListener('submit',e=>{e.preventDefault();if(!leadEmail.validity.valid){popupStatus.textContent='Please enter a valid email address.';leadEmail.focus();return;}popupStatus.textContent='Thank you. Your inquiry has been received.';});
+    if(matchMedia('(max-width:1024px)').matches)closePopup();
+
+    document.querySelectorAll('[data-detail-url]').forEach(card=>{
+      const openDetail=()=>{window.location.href=card.dataset.detailUrl;};
+      card.addEventListener('click',event=>{if(!event.target.closest('[data-add-cart]'))openDetail();});
+      card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetail();}});
+    });
+    if(window.location.hash==='#account'){closePopup();openAccount();}
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!accountLayer.hidden)closeAccount();else if(!leadLayer.hidden)closePopup();else if(searchPanel.classList.contains('is-open'))setSearch(false);}});
+
+    const mobileHolidayPromo=document.getElementById('mobileHolidayPromo');
+    const mobileBackToTop=document.getElementById('mobileBackToTop');
+    document.getElementById('mobileHolidayClose').addEventListener('click',()=>{mobileHolidayPromo.hidden=true;});
+    document.querySelectorAll('[data-mobile-menu-target]').forEach(button=>button.addEventListener('click',()=>{
+      const target=button.dataset.mobileMenuTarget==='products'?'#productsNav .nav-link':'#bestSellersNav .nav-link';
+      document.querySelector(target)?.click();
+    }));
+    let backToTopFrame;
+    const updateBackToTop=()=>{
+      backToTopFrame=0;
+      mobileBackToTop.hidden=window.scrollY<560||!matchMedia('(max-width:720px)').matches;
+    };
+    window.addEventListener('scroll',()=>{
+      if(!backToTopFrame)backToTopFrame=requestAnimationFrame(updateBackToTop);
+    },{passive:true});
+    window.addEventListener('resize',updateBackToTop);
+    mobileBackToTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'}));
+    updateBackToTop();
+  </script>
+</body>
+</html>
